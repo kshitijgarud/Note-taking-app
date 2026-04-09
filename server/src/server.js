@@ -1,7 +1,8 @@
 import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
 import notesRoutes from "./routes/notesRoutes.js";
 import { connectDB } from "./config/db.js";
-import dotenv from "dotenv";
 import rateLimiter from "./middlewares/rateLimiter.js";
 
 const port = process.env.PORT || 3000;
@@ -10,7 +11,11 @@ const app = express();
 
 
 // Middleware 
+app.use(cors({
+    origin:"http://localhost:5173",
+}));
 app.use(express.json()); // this middleware will parse JSON bodies: req.body
+app.use(express.urlencoded({extended:true}))
 app.use(rateLimiter);
 // our simple custom middleware
 // app.use((req,res,next)=>{
